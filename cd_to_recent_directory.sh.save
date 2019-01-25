@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd ~/Desktop/tst
+
+var = $('ls -td -- */ | head -n 1')
+
+$var
+
+
