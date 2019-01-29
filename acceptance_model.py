@@ -1,4 +1,4 @@
-from counter import count_and_fetch
+from Counter import count_and_fetch
 import subprocess
 import sqlite3
 
@@ -10,8 +10,6 @@ class model:
 		obj = count_and_fetch()
 		chng_dir = obj.change_directory_to_recent_dir()
 		number_of_files = obj.fetch_images_from_recent_directory()
-		number_of_files = str(number_of_files)
-		number_of_files = number_of_files.strip("b'\\n")
 		number_of_files = int(number_of_files)
 		dir_count = obj.get_directories_count_from_disk()
 		acc = open("image_accept.sh","w")
@@ -28,7 +26,7 @@ class model:
 		subprocess.call('./image_accept.sh',shell = True)
 		print("\n")
 		print("There are {} Images in {} directory, Do you want to save them (Y 'or' N)?".format(number_of_files,chng_dir))
-		n = input()
+		"""n = input()
 		if(n=='Y'):
 			conn = sqlite3.connect("Images.db")
 			c = conn.cursor()
@@ -46,7 +44,7 @@ class model:
 			update_dir_count = open("count.txt","w")
 			update_dir_count.write(dir_count)
 			update_dir_count.close()
-			print("Discarded!!")
+			print("Discarded!!")"""
 
 if(__name__ == "__main__"):
 	model_obj = model()
