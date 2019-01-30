@@ -46,8 +46,9 @@ class count_and_fetch:
 		export.close()
 		subprocess.call('chmod +x fetch_files.sh',shell = True)
 		number_of_files = subprocess.check_output('./fetch_files.sh',shell = True)
-		number_of_files.strip("b'\\n")
-		print("The number of Images in {} is {}".format(self.recent_dir,number_of_files))
+		number_of_files = str(number_of_files)
+		number_of_files = number_of_files.strip("b'\\n")
+		#print("The number of Images in {} is {}".format(self.recent_dir,number_of_files))
 		return number_of_files
 
 if(__name__ == "__main__"):
