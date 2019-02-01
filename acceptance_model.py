@@ -9,6 +9,7 @@ class model:
 	def accept(self):
 		
 		lst = []
+		idata = []
 		obj = count_and_fetch()
 		chng_dir = obj.change_directory_to_recent_dir()
 		number_of_files = obj.fetch_images_from_recent_directory()
@@ -21,21 +22,30 @@ class model:
 		acc.close()
 		subprocess.call('chmod +x image_accept.sh',shell = True)
 		subprocess.call('./image_accept.sh',shell = True)
-		with open("/media/hk/HK/DERBI/Tech-Tailor/SSHD/list.txt") as f:
-			for i in f:
+		var = '/home/hk/Desktop/tst/list1.txt'
+		with open("/media/hk/HK/DERBI/Tech-Tailor/SSHD/list.txt") as f1, open(var,"w") as f2:
+			for i in f1:
 				i = i.rstrip()
-				lst.append(i)
-				print(i)
+				f2.write('/home/hk/Desktop/tst/{}'.format(chng_dir)+i+"\n")
+				
+		with open(var) as q:
+			for each_line in q:
+				lst.append(each_line)
+				
 		print("There are {} Images in {} directory, Do you want to save them (Y 'or' N)?".format(number_of_files,chng_dir))
 		n = input()
 		if(n=='Y'):
 			con = sqlite.connect('blob.db')
-    		cur = con.cursor()
+			cur = con.cursor()
 			for i in range(dir_count):
-				c.execute('''CREATE TABLE `{}/` (`Images`	REAL)'''.format(i+1))
-				for j in range(number_of_files):
-					c.execute('''INSERT INTO `{}/` VALUES(?)''',(lst[j]).format(i+1))
-					conn.commit()
+				cur.execute('''CREATE TABLE `{}/` (`Names`	REAL ,Images 	REAL)'''.format(i+1))
+				for ind,j in enumerate(lst):
+					file = open(var, 'rb')
+					idata.append(file.read())
+					temp = idata[ind]
+					file.close()
+					cur.execute('''INSERT INTO  `{0}/` values (?, ?)'''.format(i+1),(var, sqlite.Binary(temp)))
+					con.commit()
 			print("Saved to Database Successfully!!!!")
 			"""update_dir_count = open("count.txt","w")
 			update_dir_count.write(dir_count)
